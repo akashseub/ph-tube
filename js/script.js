@@ -1,9 +1,9 @@
 const loadCategory = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories');
     const data = await res.json();
-    // console.log(data.data);
+    
     result = data.data;
-    // console.log(result);
+    
 
     const categorySection = document.getElementById('category-section');
 
@@ -22,24 +22,25 @@ const loadCategory = async () => {
 
 loadCategory();
 
+let data;
+let result1;
+console.log(result1,'result');
 const allData = async (category) => {
     console.log(category);
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${category}`);
-    const data = await res.json();
-    console.log(data);
-    // result = data.data;
+    data = await res.json();
 
+    const notFound = document.getElementById('not-found');
     if (data.status === false) {
-        const notFound = document.getElementById('not-found');
-        notFound.innerHTML = `
-            <div class="flex justify-center mt-40">
-                <img class = "" src="./image/icon.png" alt="">
-            </div>
-        `;
-        return;
+        console.log('got it');
+        console.log(notFound);
+        notFound.classList.remove('hidden');
+    }else{
+        notFound.classList.add('hidden');
     }
     
     result = data.data;
+    result1 = data.data;
 
 
     const contentContainer = document.getElementById('content-container');
@@ -99,5 +100,25 @@ function convertSecondsToTime(seconds) {
 
     return `${hours}hrs ${minutes}min ago`;
 }
+
+
+sortByButton.onclick = async function() {
+
+    let cont = data.data.sort((a, b) => {
+        const viewsA = parseInt(a.others.views.replace(/[^\d]/g, ''), 10); 
+        const viewsB = parseInt(b.others.views.replace(/[^\d]/g, ''), 10);
+    
+        return viewsB - viewsA;
+    });
+
+    result = cont;
+    
+    console.log(cont);
+
+    
+   
+    console.log("Sorting by view...");
+};
+
 
 allData(1000);
